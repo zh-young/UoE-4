@@ -23,11 +23,11 @@
 module IR_TOP(
     input CLK,
     input RESET,
-//    input [3:0] COMMAND,
-    input Switch,              //Extra function off or on switch
-    input Switch_mode,         // First Switch 
-    input [3:0] Push_button, 
-     
+    
+    input Switch,
+    input Switch_mode,
+    input [3:0] Push_button,
+    
     input [7:0] BUS_ADDR,
     input [7:0] BUS_DATA, 
     input BUS_WE,
@@ -54,8 +54,8 @@ module IR_TOP(
          Next_data<=4'b0;
        else if((BUS_ADDR==8'h90)&&(BUS_WE)&&(Switch_mode==0))
          Next_data <= BUS_DATA[3:0];    
-       else if(Switch_mode==1)
-         Next_data<=Push_button;
+       else if (Switch_mode)
+         Next_data <= Push_button;
     end
     
     assign COMMAND = Curr_data;

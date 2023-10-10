@@ -1,0 +1,53 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 21.02.2021 18:57:15
+// Design Name: 
+// Module Name: IR_TOP
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module IR_TOP(
+input CLK,
+    input RESET,
+    input [3:0] COMMAND,
+    input Switch,              //Extra function off or on switch
+ //   input SEND_PACKET,
+    output IR_LED
+
+    );
+    
+    wire CLK_10Hz;
+   
+    
+   TenHz_cnt   Counter_10Hz (
+               .CLK(CLK),
+               .RESET(RESET),
+               .Switch(Switch),
+               .SEND_PACKET(CLK_10Hz)              
+               );
+    
+    
+    
+    IRTransmitterSM  IR_SM_Wrapper(
+   .CLK(CLK),
+    .RESET(RESET),
+    .COMMAND(COMMAND),
+    .SEND_PACKET(CLK_10Hz),
+    .IR_LED(IR_LED)
+    
+     );
+endmodule

@@ -1,0 +1,17 @@
+@0x00    0x08  // move forward Command value 1000
+@0x01    0x04  // move backward  Command value 0100
+@0x02    0x0A // move forward left  Command value 1010
+@0x03    0x05 // move backward right Command value 0101
+@0x04    0x09 // move forward right  Command value 1001
+@0x05    0x06 // move backward left  Command value 0110
+
+@0x06    0x00 // stop
+@0x07    0x00 // i
+@0x08    0xC8 // time_max 200
+@0x09    0x00 // cnt
+@0x0A    0x07 // i_max
+@0x0B    0x0A // cnt_max
+@0x0C    0x00  //zero
+
+
+

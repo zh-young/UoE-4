@@ -3,7 +3,7 @@
 // Company: 
 // Engineer: 
 // 
-// Create Date: 2021/03/15 01:24:19
+// Create Date: 2021/03/21 23:48:33
 // Design Name: 
 // Module Name: TenHz_cnt
 // Project Name: 
@@ -21,50 +21,44 @@
 
 
 module TenHz_cnt(
-        input CLK,
-        input RESET,
-        input Switch,
-        output SEND_PACKET
-      
-    );
-    
-    
-parameter COUNTER_WIDTH = 25;                  // counter bit
-parameter COUNTER_MAX = 9999999;                //count max value
+//Standard Signals
+ input CLK,//50MHz
+ input RESET,
+ input Switch,
+ // Output
+ output SEND_PACKET//10Hz
+);
 
-reg [COUNTER_WIDTH-1:0] count_value=0;
-reg Trigger_out;
+    parameter COUNTER_WIDTH =32; //counter 0-9
+    parameter COUNTER_MAX=10000000-1;
+    //5000000-1 
 
-always@(posedge CLK) begin
-  if(RESET)                                //if reset is 0 and enable is 1 counter will count
-    count_value <= 0;
-  else begin
-  
-      if(count_value == COUNTER_MAX)       //if the counting value doesn't reach max value, it will count without stopping
-       count_value <= 0;
-      else
-        count_value <= count_value + 1;
-      end 
-     end  
-     
-       
-              
-//synchronous logic for Trigger_out
+    reg [COUNTER_WIDTH-1:0] counter_value=0;
+    reg trig_out=0;    
     
+    // counter increment
     always@(posedge CLK) begin
-    if (Switch)begin
-      if(RESET)
-        Trigger_out <= 0;                  // It controls carry and its value only has 0,1 much like a clock
-      else begin
-        if (count_value<=COUNTER_MAX/2)
-          Trigger_out <= 1;
-        else
-          Trigger_out <= 0;
-       
-       end
-     end   
-   end       
-       
-        assign SEND_PACKET = Trigger_out;  
-          
+        if(RESET==1)
+            counter_value <=0;
+        else begin
+            if(counter_value==COUNTER_MAX) 
+                counter_value<=0;    
+            else 
+                counter_value<=counter_value+1;
+        end
+    end    
+    
+    // Send Packet
+    always@(posedge CLK) begin
+        if(RESET)
+            trig_out <=0;
+        else if(Switch)begin
+            if(counter_value==COUNTER_MAX) 
+                trig_out<= 1;    
+            else 
+                trig_out<= 0;
+        end
+    end   
+    
+    assign SEND_PACKET=trig_out;
 endmodule

@@ -1,0 +1,59 @@
+`timescale 1ns / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company: 
+// Engineer: 
+// 
+// Create Date: 2021/02/19 23:31:41
+// Design Name: 
+// Module Name: IRTransmitterSim
+// Project Name: 
+// Target Devices: 
+// Tool Versions: 
+// Description: 
+// 
+// Dependencies: 
+// 
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+// 
+//////////////////////////////////////////////////////////////////////////////////
+
+
+module IRTransmitterSim(
+
+    );
+    
+            reg CLK;
+            reg RESET;
+            reg Switch;
+            reg [3:0] COMMAND;
+            
+            wire IR_LED;
+              
+         IR_TOP uut(
+             
+              .CLK(CLK),
+              .RESET(RESET),                
+              .COMMAND(COMMAND),         
+              .Switch(Switch),
+              .IR_LED(IR_LED)
+        
+            );
+            
+            initial begin 
+            
+              CLK = 0; 
+              RESET = 0;
+              Switch=1;
+             
+              forever #5 CLK=~CLK;
+              end
+              
+              initial begin
+              COMMAND = 4'b0000;
+              forever #100000000 COMMAND = COMMAND+1;
+             
+              end
+              
+endmodule
